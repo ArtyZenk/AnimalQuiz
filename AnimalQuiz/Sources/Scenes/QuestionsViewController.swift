@@ -9,6 +9,7 @@ import UIKit
 
 class QuestionsViewController: UIViewController {
     
+    // MARK: - IBOutlets
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var questionProgressView: UIProgressView!
     
@@ -29,6 +30,7 @@ class QuestionsViewController: UIViewController {
         }
     }
     
+    // MARK: - Private properties
     private let questions = Question.getQuestions()
     private var answersChosen = [Answer]()
     private var currentAnswers: [Answer] {
@@ -36,16 +38,19 @@ class QuestionsViewController: UIViewController {
     }
     private var questionIndex = Int()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
-
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        guard let resultVC = segue.destination as? ResultViewController else { return }
+        resultVC.answers = answersChosen
     }
     
+    // MARK: - IBActions
     @IBAction func singleAnswerButtonPressed(_ sender: UIButton) {
         guard let buttonIndex = singleButtons.firstIndex(of: sender) else { return }
         let currentAnswer = currentAnswers[buttonIndex]
@@ -71,7 +76,7 @@ class QuestionsViewController: UIViewController {
 }
 // MARK: - Private Methods
 extension QuestionsViewController {
-    private func updateUI() {
+    public func updateUI() {
         // Hide stacks
         for stackView in [singleStackView, multipleStackView, rangedStackView] {
             stackView?.isHidden = true
